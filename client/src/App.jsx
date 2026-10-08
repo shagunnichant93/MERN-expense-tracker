@@ -31,17 +31,21 @@ function App() {
       <h1>Expense Tracker</h1>
 
       <form onSubmit={handleSubmit}>
+        <label>Title:</label>
         <input
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+        <br />
+        <label>Amount:</label>
         <input
           placeholder="Amount"
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
+        <br/>
         <button type="submit">Add</button>
       </form>
 
