@@ -1,5 +1,21 @@
 const express = require('express');
 const app = express();
+const mongoose = require("mongoose");
+
+mongoose
+  .connect("mongodb://127.0.0.1:27017/MERN-expense-tracker")
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log("MongoDB error:", err.message));
+
+  const expenseSchema = new mongoose.Schema(
+  {
+    title: String,
+    amount: Number,
+  },
+  { timestamps: true }
+);
+const Expense = mongoose.model("Expense", expenseSchema);
+
 
 app.use(express.json()); //lets the server read the json data from the request body
 
@@ -8,20 +24,24 @@ app.use(express.json()); //lets the server read the json data from the request b
 app.get("/api/health", (req, res) => {
     res.json({ message: 'Server is running!' });
 });
-
-const expenses = [];
-
-app.post("/api/expenses", (req, res) => {
+app.post("/api/expenses", async (req, res) => {
+  try {
     const { title, amount } = req.body;
-    const expense = {id: Date.now(), title, amount};    
-    expenses.push(expense);
+    const expense = await Expense.create({ title, amount });
     res.status(201).json(expense);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/api/expenses", (req, res) => {
+app.get("/api/expenses", async (req, res) => {
+  try {
+    const expenses = await Expense.find();
     res.json(expenses);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
-
 /*Paste in console in browser after F12 for testing above POST request to add an expense
  and GET request to retrieve all expenses
 fetch("http://localhost:5000/api/expenses", {
