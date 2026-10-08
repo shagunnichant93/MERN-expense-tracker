@@ -25,6 +25,10 @@ function App() {
     setTitle("");
     setAmount("");
   };
+  const handleDelete = async (id) => {
+  await fetch(`${API}/${id}`, { method: "DELETE" });
+  setExpenses(expenses.filter((exp) => exp._id !== id));
+};
 
   return (
     <div style={{ maxWidth: 400, margin: "40px auto" }}>
@@ -52,7 +56,8 @@ function App() {
       <ul>
         {expenses.map((exp) => (
           <li key={exp._id}>
-            {exp.title}: {exp.amount}
+          {exp.title}: {exp.amount}{" "}
+          <button onClick={() => handleDelete(exp._id)}>Delete</button>
           </li>
         ))}
       </ul>

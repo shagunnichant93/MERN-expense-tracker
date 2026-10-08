@@ -53,6 +53,15 @@ fetch("http://localhost:5000/api/expenses", {
 }).then(r => r.json()).then(console.log);
 */
 
+app.delete("/api/expenses/:id", async (req, res) => {
+  try {
+    await Expense.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(5000, () => {
     console.log("Server is running on port 5000 in localhost");
 });
