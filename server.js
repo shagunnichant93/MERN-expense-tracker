@@ -1,6 +1,8 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/MERN-expense-tracker")
@@ -18,11 +20,11 @@ const Expense = mongoose.model("Expense", expenseSchema);
 
 
 app.use(express.json()); //lets the server read the json data from the request body
-
+app.use(cors());
 
 // Define your routes here
 app.get("/api/health", (req, res) => {
-    res.json({ message: 'Server is running!' });
+    res.json({ message: "Server is running!" });
 });
 app.post("/api/expenses", async (req, res) => {
   try {
@@ -52,5 +54,5 @@ fetch("http://localhost:5000/api/expenses", {
 */
 
 app.listen(5000, () => {
-    console.log('Server is running on port 5000 in localhost');
+    console.log("Server is running on port 5000 in localhost");
 });
