@@ -29,10 +29,12 @@ function App() {
   await fetch(`${API}/${id}`, { method: "DELETE" });
   setExpenses(expenses.filter((exp) => exp._id !== id));
 };
+const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
   return (
     <div style={{ maxWidth: 400, margin: "40px auto" }}>
       <h1>Expense Tracker</h1>
+      <h2>Total: {total}</h2>
 
       <form onSubmit={handleSubmit}>
         <label>Title:</label>
